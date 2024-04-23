@@ -20,12 +20,12 @@
 variable "tenant_id" {
   type        = string
   description = "This is the default tenant id where the resources are managed."
-  # default     = "930a470b-f629-4f93-a65b-bad14153f14f"
+  default     = "930a470b-f629-4f93-a65b-bad14153f14f"
 }
 
 variable "subscription_id" {
   type        = string
-  description = "The Azure subscription identifier."
+  description = "The Azure subscriptgaaion identifier."
   default     = "a5a70928-a6c8-4495-b752-a7ab1d7768b7" # ccoe-lab
 }
 

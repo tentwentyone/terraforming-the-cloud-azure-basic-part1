@@ -37,7 +37,7 @@ output "my_identifier" {
 }
 
 output "subscription_id" {
-  value = data.azurerm_subscription.this.name
+  value = data.azurerm_subscription.this.display_name
 }
 
 output "region" {
@@ -49,7 +49,7 @@ output "vm" {
     vm_name                = azurerm_virtual_machine.tf_workshop.name
     vm_location            = azurerm_virtual_machine.tf_workshop.location
     vm_resource_group_name = azurerm_virtual_machine.tf_workshop.resource_group_name
-    vm_private_ip          = azurerm_virtual_machine.tf_workshop.network_interface.0.ip_configuration.0.private_ip_address
+    # vm_private_ip          = azurerm_virtual_machine.tf_workshop.network_interface_ids.0.ip_configuration.0.private_ip_address
     az_cli_cmd             = "az ssh vm --resource-group ${azurerm_virtual_machine.tf_workshop.resource_group_name} --name ${azurerm_virtual_machine.tf_workshop.name}"
     # Please note that the az_cli_cmd is not a direct equivalent to the gcloud_cmd in the original output. It opens port 22 (SSH) on the VM, which is a prerequisite for SSH access. To actually SSH into the VM, you would need to use an SSH client and the VM's IP address.
   }

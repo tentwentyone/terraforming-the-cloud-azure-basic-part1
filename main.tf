@@ -123,7 +123,7 @@ data "azurerm_resource_group" "tf_workshop" {
 
 data "azurerm_network_interface" "tf_workshop" {
   name                = "tf-workshop"
-  resource_group_name = azurerm_resource_group.default.name
+  resource_group_name = data.azurerm_resource_group.tf_workshop.name
 }
 
 resource "azurerm_virtual_machine" "tf_workshop" {
