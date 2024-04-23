@@ -51,7 +51,7 @@ locals {
   azure_role_assignments_flattened = flatten([
     for key, item in local.azure_role_assignments : [
       for role_key, role in item.role_definition_name : {
-        principal_id = item.principal_id
+        principal_id         = item.principal_id
         role_definition_name = role
       }
     ]
@@ -59,7 +59,7 @@ locals {
 }
 
 resource "azurerm_role_assignment" "this" {
-  for_each = { for role_assignment in local.azure_role_assignments_flattened : "${role_assignment.role_definition_name}|${role_assignment.principal_id}" => role_assignment }
+  for_each             = { for role_assignment in local.azure_role_assignments_flattened : "${role_assignment.role_definition_name}|${role_assignment.principal_id}" => role_assignment }
   scope                = var.subscription_id
   role_definition_name = each.value.role_definition_name
   principal_id         = each.value.principal_id

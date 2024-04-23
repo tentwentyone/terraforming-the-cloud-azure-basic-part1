@@ -91,7 +91,7 @@ terraform {
 }
 
 provider "azurerm" {
-  tenant_id       = var.tenant_id                          # nosportugal.onmicrosoft.com
+  tenant_id       = var.tenant_id # nosportugal.onmicrosoft.com
   subscription_id = var.subscription_id
   features {}
 }
@@ -118,7 +118,7 @@ resource "random_pet" "this" {
 
 # referenciar a subnet já existente
 data "azurerm_resource_group" "tf_workshop" {
-  name   = "tf-workshop"
+  name = "tf-workshop"
 }
 
 data "azurerm_network_interface" "tf_workshop" {
@@ -127,12 +127,12 @@ data "azurerm_network_interface" "tf_workshop" {
 }
 
 resource "azurerm_virtual_machine" "tf_workshop" {
-  name                  = "${random_pet.this.id}-tf-workshop"
-  location              = data.azurerm_resource_group.tf_workshop.location
-  resource_group_name   = data.azurerm_resource_group.tf_workshop.name
-  network_interface_ids = [data.azurerm_network_interface.tf_workshop.id]
-  vm_size               = "Standard_DS1_v2"
-  delete_os_disk_on_termination = true
+  name                             = "${random_pet.this.id}-tf-workshop"
+  location                         = data.azurerm_resource_group.tf_workshop.location
+  resource_group_name              = data.azurerm_resource_group.tf_workshop.name
+  network_interface_ids            = [data.azurerm_network_interface.tf_workshop.id]
+  vm_size                          = "Standard_DS1_v2"
+  delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
 
   storage_image_reference {

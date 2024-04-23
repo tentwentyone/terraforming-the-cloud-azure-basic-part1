@@ -89,5 +89,5 @@ locals {
 
 resource "azurerm_resource_provider_registration" "this" {
   for_each = toset(local.azure_service_list)
-  name = each.key
+  name     = each.key
 }
