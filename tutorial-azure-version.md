@@ -16,20 +16,24 @@
 
 **Pré requsitos**: Antes de começares, é necessário verificares algumas coisas:
 
-Certifica-te que tens a `google-cloud-shell` devidamente autorizada correndo este comando:
+Certifica-te que tens a `azure-cloud-shell` devidamente configurada correndo este comando:
 
 ```bash
-gcloud config set project tf-gke-lab-01-np-000001 && gcloud config set accessibility/screen_reader false
+az account show
+```
+
+Na eventualidade da subscrição não ser <subscrição correcta> faz o seguinte comando:
+
+```bash
+az account set --subscription <subscription_name>
 ```
 
 Para evitar que o terraform peça o nome do projeto a cada `apply`, podemos definir o nome do projeto por defeito:
 
 * Abrir o ficheiro `terraform.tfvars`
-* Descomentar a linha `project_id` e adicionar o id do projeto.
+* Descomentar a linha `subscription_id` e adicionar o id do projeto.
 
-De seguida, clica no botão **Start** para começares.
-
-## 1. o primeiro contacto
+## 1. O primeiro contacto
 
 Nesta secção iremos executar os 4 principais comandos de terraform: `init`, `plan`, `apply` e `destroy`.
 
@@ -52,11 +56,12 @@ terraform init
 ```bash
 terraform plan -out plan.tfplan
 ```
+##Esta linha abaixo é repetida ao inicio - faz sentido manter a do inicio ou somente deixar que ao fazerem o primeiro plan sejam "prompted" a introduzir o id da subscrição para depois cancelarem e irem dar uncomment.
 
 💡Para evitar que o terraform peça o nome do projeto a cada `plan`, podemos definir o nome do projeto por defeito:
 
-* Abrir o ficheiro <walkthrough-editor-select-line filePath="terraform.tfvars" startLine="0" endLine="0" startCharacterOffset="0" endCharacterOffset="200">terraform.tfvars</walkthrough-editor-select-line>.
-* Descomentar a linha `project_id` e adicionar o id do projeto que aparece a amarelo na linha de comandos.
+* Abrir o ficheiro `terraform.tfvars`.
+* Descomentar a linha `subscription_id` e adicionar o id do projeto que aparece a amarelo na linha de comandos.
 
 ### Comando `apply`
 
@@ -66,11 +71,26 @@ terraform plan -out plan.tfplan
 terraform apply plan.tfplan
 ```
 
-verificar que o recurso remoto foi criado:
+Após o apply repara nos seguintes **outputs**
+
+![alt text](/doc-images/image-7.png)
+
+Esta informação diz respeito aos recursos que criaste!
+
+Para verificares que os recursos remotos foram criados utiliza os seguintes comandos:
+
+Resource Group:
 
 ```bash
-gcloud compute instances list
+az group list | grep <my_generic_identifier_value>
 ```
+
+Virtual Network:
+
+```bash
+az network vnet list | grep <my_generic_identifier_value>
+```
+
 
 ### Comando `destroy`
 
@@ -82,19 +102,32 @@ gcloud compute instances list
 terraform destroy
 ```
 
-verificar que o recurso remoto foi destruido:
+Para verificares que os recursos remotos foram destruídos:
+
+Resource Group:
 
 ```bash
-gcloud compute instances list
+az group list | grep <my_generic_identifier_value>
 ```
 
-## 2. lidar com as alterações
+Virtual Network:
+
+```bash
+az network vnet list | grep <my_generic_identifier_value>
+```
+
+## 2. Lidar com as alterações
 
 Nesta secção iremos demonstrar a utilização de terraform perante varios tipos de alterações.
 
 > *Assegurar que os recursos previamente criados foram devidamente destruidos: `terraform destroy`.`*
 
-### Assegurar a recriação dos recursos (`plan` e `apply`)
+### Criar uma Máquina Virtual
+
+* Abrir o ficheiro `main.tf`
+* Descomentar o bloco referente ao `exercicio 2.`
+
+### Assegurar a criação dos recursos (`plan` e `apply`)
 
 ```bash
 terraform plan -out plan.tfplan
@@ -104,22 +137,32 @@ terraform plan -out plan.tfplan
 terraform apply plan.tfplan
 ```
 
-### Tentar entrar para a máquina via SSH
+### 2.0.1 Tentar entrar para a máquina via SSH
 
-Podem obter o comando a partir do output do terraform, ou usando o comando `gcloud`:
+Podem obter o comando a partir do output do terraform, e usando o comando `azure`:
 
-```bash
-gcloud compute ssh $(terraform output -raw vm_name) --project=$(terraform output -raw project_id) --zone $(terraform output -raw vm_zone)
-```
+* Abrir o ficheiro `outputs.tf`.
+* Descomenta o bloco referente ao exercicio `2.0.1`.
+* Abrir o ficheiro `terraform.tfvars`
+* Descomenta o bloco referente ao exercicio `2.0.1` e define a tua password.
 
-> não deverá ser possível fazer ssh porque precisamos de introduzir uma firewall-tag
-> vamos então efectuar uma alteração **não-disruptiva**
+Esta deve de conter os seguintes elementos:
+![alt text](/doc-images/image-11.png)
+
+* Fazer `terraform plan -out plan.tfplan`.
+* Copiar o comando referente ao **teu** output `az_cli_cmd`.
+
+*Exemplo:*
+![alt text](/doc-images/image-9.png)
+
+* Correr o comando.
+* Utiliza a tua password para aceder à VM.
 
 ### 2.1 Introduzindo alterações não-disruptivas
 
 > **As alterações não disruptivas são pequenas alterações que possibilitam a re-configuração do recurso sem que este tenha que ser recriado, não afetando as suas dependências**
 
-* Editar o ficheiro <walkthrough-editor-select-line filePath="main.tf" startLine="57" endLine="57" startCharacterOffset="0" endCharacterOffset="200">main.tf</walkthrough-editor-select-line>, localizar o recurso `google_compute_instance.default` e descomentar o campo `tags = [ "allow-iap" ]` na definição do recurso
+* Editar o ficheiro `main.tf`, localizar o recurso `azurerm_virtual_machine.my_virtual_machine` e descomentar o campo `tags` - define uma tag para a tua vm!
 
 Executar `terraform plan -out plan.tfplan` e verificar que o Terraform irá efectuar um `update in-place` - isto é uma alteração simples.
 
@@ -133,17 +176,11 @@ Executar `terraform apply plan.tfplan`.
 terraform apply plan.tfplan
 ```
 
-Como adicionámos uma tag que permite indicar à firewall o acesso SSH por IAP, podemos então testar novo comando de SSH:
-
-```bash
-gcloud compute ssh $(terraform output -raw vm_name) --project=$(terraform output -raw project_id) --zone $(terraform output -raw vm_zone)
-```
-
 ### 2.2 Introduzindo alterações disruptivas
 
 > **As alterações disruptivas são provocadas por alterações de propriedades que provocam a recriação do recurso e consequentes dependencias**
 
-* No ficheiro <walkthrough-editor-select-line filePath="main.tf" startLine="53" endLine="53" startCharacterOffset="0" endCharacterOffset="200">main.tf</walkthrough-editor-select-line>, localizar o recurso `google_compute_instance.default` e alterar o campo `name` para o seguinte: `"${random_pet.this.id}-vm-new"`
+* No ficheiro main.tf, localizar o recurso `azurerm_virtual_machine.tfworkshop` e alterar o campo `name` para o seguinte: `"${random_pet.this.id}-vm-new"`
 * Executar `terraform plan -out plan.tfplan` e verificar que o Terraform irá efectuar um `replacement` - é uma alteração disruptiva.
 
 ```bash
@@ -161,14 +198,14 @@ Verificar que o SSH continua a ser possível, mesmo com a nova instância:
 <sub>*o comando pode não funcionar logo...pode demorar até 1 minuto depois da VM ser criada.*</sub>
 
 ```bash
-gcloud compute ssh $(terraform output -raw vm_name) --project=$(terraform output -raw project_id) --zone $(terraform output -raw vm_zone)
+az ssh vm $(terraform output -raw vm_name) --subscription=$(terraform output -raw subscription_id) --location $(terraform output -raw vm_location)
 ```
 
 ### 2.3 Introduzindo alterações dependentes
 
 > **As alterações também podem ser derivadas de dependêndencias, e quando isso acontece, todo o grafo de dependendencias é afetado.**
 
-* Editar o ficheiro <walkthrough-editor-select-line filePath="terraform.tfvars" startLine="1" endLine="1" startCharacterOffset="10" endCharacterOffset="13">terraform.tfvars</walkthrough-editor-select-line> e alterar o valor da variavel `prefix` de `gcp` para `new`
+* Editar o ficheiro terraform.tfvars e alterar o valor da variavel `prefix` de `az` para `new`
 
 Executar o `plan` e verificar todo o grafo de dependencias é afetado:
 
@@ -204,16 +241,16 @@ terraform plan -out plan.tfplan
 terraform apply plan.tfplan
 ```
 
-### 3.1 Criar um recurso (`google_compute_network`) usando os comandos gcloud
+### 3.1 Criar um recurso (`azurerm_virtual_network`) usando os comandos azure
 
 Nesta parte vamos criar recursos recorrendo a uma ferramenta externa ao terraform por forma a criar um use-case de recursos que existem fora do `state` do terraform.
 
 O objetivo é simular recursos que já existiam para que os possamos *terraformar*.
 
-Criar uma vpc:
+Criar uma Virtual Network:
 
 ```bash
-gcloud compute networks create $(terraform output -raw my_identifier)-vpc --project=$(terraform output -raw project_id) --subnet-mode=custom
+az network vnet create $(terraform output -raw my_identifier)-vpc --subscription=$(terraform output -raw subscription_id)
 ```
 
 ### 3.2 Importar recursos existentes
@@ -229,7 +266,7 @@ O primeiro passo da importação de recursos é [declarar a importação dos mes
 
 Para isto, [temos que definir o bloco `import`](https://developer.hashicorp.com/terraform/tutorials/state/state-import#define-import-block), que necessita de dois argumentos:
 
-* `id`: o id do recurso a importar do lado do GCP
+* `id`: o id do recurso a importar do lado de Azure
 * `to`: o identificador terraform do recurso a importar
 
 Exemplo de um bloco `import`:
@@ -237,17 +274,17 @@ Exemplo de um bloco `import`:
 ```hcl
 import {
   id = "projects/tf-gke-lab-01-np-000001/global/networks/somevpc"
-  to = google_compute_network.imported
+  to = azurerm_virtual_network.imported
 }
 ```
 
-Para o exercicio que segue, vamos ao ficheiro <walkthrough-editor-select-line filePath="import-exercise.tf" startLine="2" endLine="10" startCharacterOffset="0" endCharacterOffset="200">import-exercise.tf</walkthrough-editor-select-line> e descomentar os blocos `import { ... }`
+Para o exercicio que segue, vamos ao ficheiro import-exercise.tf e descomentar os blocos `import { ... }`
 
-Antes de efetuar a importação precisamos de obter o `id` do recurso a importar do lado do GCP tal como descrito nas instruções de importação para o recurso [`google_compute_network`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_network#import).
+Antes de efetuar a importação precisamos de obter o `id` do recurso a importar do lado do GCP tal como descrito nas instruções de importação para o recurso [`azurerm_virtual_network`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network#import).
 
 Existem várias formas para obter o `id` dos recursos, neste exemplo usamos os comandos `gcloud`:
 
-Obter o `id` para a `google_compute_network`:
+Obter o `id` para a `azurerm_virtual_network`:
 
 ```bash
 gcloud compute networks list --uri | grep "$(terraform output -raw my_identifier)" | sed "s~https://www.googleapis.com/compute/v1/~~"
@@ -255,7 +292,7 @@ gcloud compute networks list --uri | grep "$(terraform output -raw my_identifier
 
 Agora que temos o identificador dos recursos, temos que preencher o respetivo `id` no bloco `import`:
 
-* Substituir o `id` do recurso `google_compute_network` no bloco `import` do ficheiro <walkthrough-editor-select-line filePath="import-exercise.tf" startLine="3" endLine="3" startCharacterOffset="8" endCharacterOffset="14">import-exercise.tf</walkthrough-editor-select-line>
+* Substituir o `id` do recurso `azurerm_virtual_network` no bloco `import` do ficheiro import-exercise.tf
 
 ---
 
@@ -265,7 +302,7 @@ Vamos então correr o `plan`, mas vamos usar a opção `-generate-config-out` pa
 terraform plan -out plan.tfplan -generate-config-out imported-resources.tf
 ```
 
-Podemos inspeccionar os conteudos do ficheiro <walkthrough-editor-select-line filePath="imported-resources.tf" startLine="0" endLine="100" startCharacterOffset="0" endCharacterOffset="200">imported-resources.tf</walkthrough-editor-select-line>.
+Podemos inspeccionar os conteudos do ficheiro imported-resources.tf.
 
 Por fim, o `apply` para executar a operação planeada:
 
@@ -287,26 +324,26 @@ Neste exercicio o objectivo é aplicar alguns dos conhecimentos adquiridos nesta
 
 Prentende-se o seguinte:
 
-* 👉 Devem fazer o exercicio no ficheiro <walkthrough-editor-open-file filePath="final-exercise.tf">final-exercise.tf</walkthrough-editor-open-file>.
-* 👉 Criar uma Google Cloud Service Account com os seguintes requisitos:
-  * `account_id` deverá ser prefixada com valor definido no recurso `random_pet.this.id` para evitar colisões de nomes
-* 👉 Criar uma Google Cloud Compute Instance com os seguintes requisitos:
+* 👉 Devem fazer o exercicio no ficheiro final-exercise.tf"final-exercise.tf.
+* 👉 Criar uma Azure Assigned Identity com os seguintes requisitos:
+  * `name` deverá ser prefixada com valor definido no recurso `random_pet.this.id` para evitar colisões de nomes
+* 👉 Criar uma Azure Virtual Machine com os seguintes requisitos:
   * Nome da máquina deverá ser prefixado com valor definido no recurso `random_pet.this.id` para evitar colisões de nomes
-  * Tipo de máquina: `e2-small`
-  * Zona: `europe-west1-b`
+  * Tipo de máquina: `Standard_B1s`
+  * Zona: `westeurope`
   * Deverá conter uma tag `allow-iap`
   * A rede (`subnetwork`) onde a VM vai correr fica ao vosso critério: podem criar uma nova, ou podem usar as já existentes.
-  * A máquina deverá correr com a `google_service_account` previamente criada.
+  * A máquina deverá correr com a `azurerm_user_assigned_identity` previamente criada.
 * 👉 Por fim, deverão testar o correto aprovisionamento fazendo `ssh` para a máquina que acabaram de criar.
 
 ### Ajudas😵
 
 💡 Usem a pesquisa no terraform registry / google para saberem mais informação acerca dos recursos que estão a usar:
 
-* [`google_service_account`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_service_account)
-* [`google_compute_instance`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance)
+* [`azurerm_user_assigned_identity`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity)
+* [`azurerm_virtual_machine`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine)
 
-💡 Uma subnet já existente poderá ser <walkthrough-editor-select-line filePath="main.tf" startLine="46" endLine="49" startCharacterOffset="0" endCharacterOffset="200">data.google_compute_subnetwork.default.self_link</walkthrough-editor-select-line>.
+💡 Uma subnet já existente poderá ser data.google_compute_subnetwork.default.self_link.
 
 💡 Caso não consigam fazer `ssh`, também podem consultar a descrição da VM recorrendo ao comando:
 

@@ -1,7 +1,5 @@
 # terraforming the cloud - part 1
 
-![Terraforming the cloud architecture][tfc-arch]
-
 Temas abordados neste modulo:
 
 * Os 4 principais comandos de terraform: `init`, `plan`, `apply` e `destroy`.
@@ -11,118 +9,45 @@ Temas abordados neste modulo:
 * Gestão de alterações: **simples**, **disruptivas** e **dependentes**.
 * Destruição seletiva de recursos.
 
-## iniciar o tutorial (setup automatico)
+## Inicio
 
-[![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.png)](https://ssh.cloud.google.com/cloudshell/open?cloudshell_git_repo=https://github.com/nosportugal/terraforming-the-cloud-part1&cloudshell_git_branch=main&cloudshell_workspace=.&cloudshell_tutorial=tutorial.md)
+Esta secção explica como preparar a Azure Cloud Shell para executarem os comandos.
 
-### erro a abrir o tutorial
+### Configurar a cloud shell
 
-Se por acaso tiverem este erro:
+Abrir o endereço <https://portal.azure.com/#cloudshell/> e autenticar.
 
-![tfc-cloushell-error-reserved-id]
+Abrir a Cloud Shell:
 
-Devem fechar o tutorial:
+![alt text](/doc-images/image.png)
 
-![tfc-cloushell-error-open-tutorial]
+Selecionar Bash:
 
-E depois na cloudshell vamos reinicar o tutorial usando o seguinte comando:
+![alt text](/doc-images/image-1.png)
 
-```bash
-teachme tutorial.md
-```
+Seleciona a subscrição <>
 
----
-
-## setup do ambiente (manual)
-
-Esta secção explica como preparar o IDE para poderem executar os comandos do tutorial.
-
-Abaixo seguem dois guias para configuração em:
-
-1. Google Cloud Shell
-2. Visual Studio Code
-
-### configurar a cloud shell
-
-Abrir o endereço <https://console.cloud.google.com> e autenticar.
-
-De seguida, ativar a cloud shell:
-
-![tfc-cloudshell-activate]
-
-Abrir em nova janela:
-
-![tfc-cloushell-open-new]
-
-Abrir editor:
-
-![tfc-cloushell-open-editor]
-
-Fechar a janela do terminal no fundo:
-
-![tfc-cloushell-close-terminal]
-
-Abrir novo terminal (embebido no editor):
-
-![tfc-cloushell-new-terminal]
+![alt text](/doc-images/image-2.png)
 
 Clonar o projeto:
 
 ```bash
-git clone https://github.com/nosportugal/terraforming-the-cloud-part1 && cd terraforming-the-cloud-part1
+git clone https://github.com/tentwentyone/terraforming-the-cloud-azure-basic-part1.git && cd terraforming-the-cloud--azure-basic-part1
 ```
 
-Abrir o editor na pasta do projeto:
+Mudar para o editor:
 
-![tfc-cloushell-open-folder]
+![alt text](/doc-images/image-3.png)
 
-E agora que têm o editor pronto, podemos autenticar a consola com o GCP:
+Confirmar a mudança:
 
-```bash
-gcloud config set project <project-id>
-```
+![alt text](/doc-images/image-4.png)
 
-Para iniciar o tutorial, executamos o seguinte comando na consola:
+Abrir o editor:
 
-```bash
-teachme tutorial.md
-```
+![alt text](/doc-images/image-5.png)
 
-## configurar o vscode
-
-> apenas válido para vscode em WSL (windows-subsystem-linux) - instalações em powershell não são suportadas
-
-Caso decidam usar o `vscode`, é necessário garantirem que têm os seguintes binários instalados.
-As instruções que seguem vão instalar as tools necessárias:
-
-1. terraform
-2. kubectl
-3. gcloud
-
-```bash
-# instalar as tools necessárias (podem skipar se já têm instaladas)
-sudo ./scripts/install-terraform.sh        # terraform
-sudo ./scripts/install-kubectl.sh          # kubectl
-curl https://sdk.cloud.google.com | bash   # gcloud
-
-# reinicializar a shell
-exec -l $SHELL
-
-# inicializar o cliente gcloud
-gcloud init
-gcloud auth application-default login
-
-# definir o projeto por defeito (opcional)
-gcloud config set project <project-id>
-```
-
-Por fim, podemos clonar o projeto:
-
-```bash
-git clone https://github.com/nosportugal/terraforming-the-cloud-part1 && cd terraforming-the-cloud-part1
-```
-
-## Comandos úteis
+![alt text](/doc-images/image-6.png)
 
 ```bash
 # obter a lista de machine-types
@@ -151,21 +76,3 @@ gcloud compute networks subnets list --uri | grep "$(terraform output -raw my_id
  [//]: # (*****************************)
  [//]: # (INSERT IMAGE REFERENCES BELOW)
  [//]: # (*****************************)
-
-[tfc-arch]: https://github.com/nosportugal/terraforming-the-cloud-part1/raw/main/images/terraforming-the-cloud.png "Terraforming the cloud architecture"
-
-[tfc-cloudshell-activate]: https://github.com/nosportugal/terraforming-the-cloud-part1/raw/main/images/cloudshell-activate.png "Cloudshell activate screenshot"
-
-[tfc-cloushell-open-new]: https://github.com/nosportugal/terraforming-the-cloud-part1/raw/main/images/cloudshell-open-new.png "Cloudshell open new window screenshot"
-
-[tfc-cloushell-open-editor]: https://github.com/nosportugal/terraforming-the-cloud-part1/raw/main/images/cloudshell-open-editor.png "Cloudshell open editor screenshot"
-
-[tfc-cloushell-close-terminal]: https://github.com/nosportugal/terraforming-the-cloud-part1/raw/main/images/cloudshell-close-terminal.png "Cloudshell close terminal window screenshot"
-
-[tfc-cloushell-new-terminal]: https://github.com/nosportugal/terraforming-the-cloud-part1/raw/main/images/cloudshell-new-terminal.png "Cloudshell new terminal window screenshot"
-
-[tfc-cloushell-open-folder]: https://github.com/nosportugal/terraforming-the-cloud-part1/raw/main/images/cloudshell-open-folder.png "Cloudshell open folder screenshot"
-
-[tfc-cloushell-error-reserved-id]: https://github.com/nosportugal/terraforming-the-cloud-part1/raw/main/images/cloudshell-open-error-reserved-id.jpg "Cloudshell error reserved-id"
-
-[tfc-cloushell-error-open-tutorial]: https://github.com/nosportugal/terraforming-the-cloud-part1/raw/main/images/cloudshell-open-error-close-tutorial.jpg "Cloudshell error open tuturial"
