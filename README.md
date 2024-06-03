@@ -44,7 +44,13 @@ Confirmar a mudança:
 Clonar o projeto:
 
 ```bash
-git clone https://github.com/tentwentyone/terraforming-the-cloud-azure-basic-part1.git && cd terraforming-the-cloud--azure-basic-part1
+git clone https://github.com/tentwentyone/terraforming-the-cloud-azure-basic-part1.git
+```
+
+Mudar de diretório.
+
+```bash
+cd terraforming-the-cloud--azure-basic-part1
 ```
 
 Abrir o editor:

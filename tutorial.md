@@ -85,7 +85,6 @@ Virtual Network:
 az network vnet list | grep <my_generic_identifier_value>
 ```
 
-
 ### Comando `destroy`
 
 > *[from docs:](https://www.terraform.io/docs/cli/commands/destroy.html) The `terraform destroy` command is a convenient way to destroy all remote objects managed by a particular Terraform configuration.*
