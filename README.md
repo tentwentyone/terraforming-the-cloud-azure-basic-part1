@@ -15,19 +15,19 @@ Esta secção explica como preparar a Azure Cloud Shell para executarem os coman
 
 ### Configurar a cloud shell
 
-Abrir o endereço: <https://portal.azure.com/#cloudshell/>
+Abrir o endereço: <https://portal.azure.com>
 
 Autenticar na Azure Cloud:
 
-![alt text](/images/sign-in.png)
+![alt text](/images/sign_in.png)
 
 Abrir a Cloud Shell:
 
-![alt text](/images/cloud-shell.png)
+![alt text](/images/cloud_shell.png)
 
 Selecionar Bash:
 
-![alt text](/images/bash-pshell.png)
+![alt text](/images/bash_pshell.png)
 
 Seleciona a subscrição <>
 
@@ -35,11 +35,11 @@ Seleciona a subscrição <>
 
 Mudar para o editor:
 
-![alt text](/images/choose-editor.png)
+![alt text](/images/choose_editor.png)
 
 Confirmar a mudança:
 
-![alt text](/images/classic-shell.png)
+![alt text](/images/classic_shell.png)
 
 Clonar o projeto:
 
@@ -55,11 +55,11 @@ cd terraforming-the-cloud--azure-basic-part1
 
 Abrir o editor:
 
-![alt text](/images/open-editor.png)
+![alt text](/images/open_editor.png)
 
 Setup está completo!
 
-![alt text](/images/setup-complete.png)
+![alt text](/images/setup_complete.png)
 
 ### Comandos Úteis
 

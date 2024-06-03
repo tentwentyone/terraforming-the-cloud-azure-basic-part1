@@ -1,2 +1,6 @@
-project_id=
-gcp_trainer_group=
+#subscription_id  = ""
+prefix           = "az"
+tenant_id        = ""
+region           = "westeurope"
+# admin_username   = ""
+# admin_password   = ""

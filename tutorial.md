@@ -1,6 +1,6 @@
-# terraforming the cloud - part 1
+# Terraforming the Cloud - Part 1
 
-![Terraforming the cloud architecture][tfc-arch]
+![alt text](/images/terraform_part_1.png)
 
 ## Temas abordados neste modulo
 
@@ -165,14 +165,6 @@ Aplicar o `plan`, verificar e acompanhar observando na execução do terraform q
 terraform apply plan.tfplan
 ```
 
-Verificar que o SSH continua a ser possível, mesmo com a nova instância:
-
-<sub>*o comando pode não funcionar logo...pode demorar até 1 minuto depois da VM ser criada.*</sub>
-
-```bash
-az ssh vm $(terraform output -raw vm_name) --subscription=$(terraform output -raw subscription_id) --location $(terraform output -raw vm_location)
-```
-
 ### 2.3 Introduzindo alterações dependentes
 
 > **As alterações também podem ser derivadas de dependêndencias, e quando isso acontece, todo o grafo de dependendencias é afetado.**
@@ -296,17 +288,16 @@ Neste exercicio o objectivo é aplicar alguns dos conhecimentos adquiridos nesta
 
 Prentende-se o seguinte:
 
-* 👉 Devem fazer o exercicio no ficheiro final-exercise.tf"final-exercise.tf.
+* 👉 Devem fazer o exercicio no ficheiro `final-exercise.tf`.
 * 👉 Criar uma Azure Assigned Identity com os seguintes requisitos:
   * `name` deverá ser prefixada com valor definido no recurso `random_pet.this.id` para evitar colisões de nomes
 * 👉 Criar uma Azure Virtual Machine com os seguintes requisitos:
   * Nome da máquina deverá ser prefixado com valor definido no recurso `random_pet.this.id` para evitar colisões de nomes
   * Tipo de máquina: `Standard_B1s`
   * Zona: `westeurope`
-  * Deverá conter uma tag `allow-iap`
+  * Deverá conter uma tag (`project = terraform-part-1`)
   * A rede (`subnetwork`) onde a VM vai correr fica ao vosso critério: podem criar uma nova, ou podem usar as já existentes.
   * A máquina deverá correr com a `azurerm_user_assigned_identity` previamente criada.
-* 👉 Por fim, deverão testar o correto aprovisionamento fazendo `ssh` para a máquina que acabaram de criar.
 
 ### Ajudas😵
 
@@ -314,10 +305,96 @@ Prentende-se o seguinte:
 
 * [`azurerm_user_assigned_identity`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity)
 * [`azurerm_virtual_machine`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine)
+* [`azurerm_network_interface`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface)
+* [`azurerm_subnet`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet)
 
-💡 Uma subnet já existente poderá ser `data.azurerm_virtual_network.default.id`.
+💡 Uma subnet já existente poderá ser `data.azurerm_subnet.my_subnet.id`.
 
 </details>
+
+<details>
+  <summary>Solution</summary>
+
+  ```python
+# resource "azurerm_user_assigned_identity" "uai" {
+#   resource_group_name = azurerm_resource_group.my_resource_group.name
+#   location            = azurerm_resource_group.my_resource_group.location
+#   name                = "${random_pet.this.id}-uai"
+# }
+
+# resource "random_pet" "final" {
+#   length = 2
+#   prefix = var.prefix
+# }
+
+
+# resource "azurerm_virtual_machine" "final_exercise_machine" {
+#   name                = "${random_pet.final.id}-vm"
+#   location            = var.region
+#   resource_group_name = azurerm_resource_group.my_resource_group.name
+#   vm_size             = "Standard_B1ls"
+
+#   identity {
+#     type = "UserAssigned"
+#     identity_ids = [
+#       azurerm_user_assigned_identity.uai.id
+#     ]
+#   }
+
+#   tags = {
+#     owner = "admin"
+#   }
+
+#   os_profile {
+#     computer_name  = "my-vm"
+#     admin_username = "admin"
+#     admin_password = "Pw123456789!"
+#   }
+
+
+#   os_profile_linux_config {
+#     disable_password_authentication = false
+#   }
+
+#   storage_image_reference {
+#     publisher = "Canonical"
+#     offer     = "UbuntuServer"
+#     sku       = "18.04-LTS"
+#     version   = "latest"
+#   }
+
+#   storage_os_disk {
+#     name              = "${random_pet.final.id}-osdisk"
+#     caching           = "ReadWrite"
+#     create_option     = "FromImage"
+#     managed_disk_type = "Standard_LRS"
+#   }
+
+#   network_interface_ids = [
+#     azurerm_network_interface.final_exercise_nic.id
+#   ]
+# }
+
+# resource "azurerm_network_interface" "final_exercise_nic" {
+#   name                = "${random_pet.final.id}-nic"
+#   location            = var.region
+#   resource_group_name = azurerm_resource_group.my_resource_group.name
+
+#   ip_configuration {
+#     name                          = "internal"
+#     subnet_id                     = data.azurerm_subnet.my_subnet.id
+#     private_ip_address_allocation = "Dynamic"
+#     public_ip_address_id          = azurerm_public_ip.final_exercise_public_ip.id
+#   }
+# }
+
+# resource "azurerm_public_ip" "final_exercise_public_ip" {
+#   name                = "${random_pet.final.id}-public-ip"
+#   location            = var.region
+#   resource_group_name = azurerm_resource_group.my_resource_group.name
+#   allocation_method   = "Dynamic"
+# }
+```
 
 ## 5. wrap-up & destroy
 
@@ -329,13 +406,5 @@ terraform destroy
 
 🔚🏁 Chegámos ao fim 🏁🔚
 
-<walkthrough-conclusion-trophy></walkthrough-conclusion-trophy>
-
 <!-- markdownlint-disable-file MD013 -->
 <!-- markdownlint-disable-file MD033 -->
-
- [//]: # (*****************************)
- [//]: # (INSERT IMAGE REFERENCES BELOW)
- [//]: # (*****************************)
-
-[tfc-arch]: https://github.com/nosportugal/terraforming-the-cloud-part1/raw/main/images/terraforming-the-cloud.png "Terraforming the cloud architecture"
