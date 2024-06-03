@@ -17,3 +17,12 @@ variable "prefix" {
   type        = string
   description = "A simple prefix"
 }
+variable "admin_username" {
+  type        = string
+  description = "The admin username for the virtual machine."
+}
+
+variable "admin_password" {
+  type        = string
+  description = "The admin password for the virtual machine."
+}
