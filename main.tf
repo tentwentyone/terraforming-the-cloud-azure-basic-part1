@@ -35,29 +35,25 @@ data "azurerm_subscription" "this" {
 
 ##############################################################
 
-resource "random_pet" "default" {
-  length    = 2
-  separator = "-"
-}
+
 resource "random_pet" "this" {
   length    = 2
-  prefix    = local.prefix
   separator = "-"
 }
 
 resource "azurerm_resource_group" "my_resource_group" {
-  name     = "${random_pet.default.id}-rg"
+  name     = "${random_pet.this.id}-rg"
   location = var.region
 }
 
 resource "azurerm_virtual_network" "my_virtual_network" {
-  name                = "${random_pet.default.id}-vnet"
+  name                = "${random_pet.this.id}-vnet"
   location            = var.region
   resource_group_name = azurerm_resource_group.my_resource_group.name
   address_space       = ["10.0.0.0/16"]
 
   subnet {
-    name           = "subnet-default"
+    name           = "workshop-subnet"
     address_prefix = "10.0.1.0/24"
   }
 }
@@ -68,7 +64,7 @@ resource "azurerm_virtual_network" "my_virtual_network" {
 ## UNCOMMENT AFTER FIRST APPLY
 
 # resource "azurerm_network_interface" "my_network_interface" {
-#   name                = "${random_pet.default.id}-ni"
+#   name                = "${random_pet.this.id}-ni"
 #   location            = var.region
 #   resource_group_name = azurerm_resource_group.my_resource_group.name
 
@@ -83,14 +79,14 @@ resource "azurerm_virtual_network" "my_virtual_network" {
 # }
 
 # resource "azurerm_public_ip" "my_public_ip" {
-#   name                = "${random_pet.default.id}-public-ip"
+#   name                = "${random_pet.this.id}-public-ip"
 #   location            = var.region
 #   resource_group_name = azurerm_resource_group.my_resource_group.name
 #   allocation_method   = "Dynamic"
 # }
 
 # data "azurerm_subnet" "my_subnet" {
-#   name                 = "subnet-default"
+#   name                 = "workshop-subnet"
 #   virtual_network_name = azurerm_virtual_network.my_virtual_network.name
 #   resource_group_name  = azurerm_resource_group.my_resource_group.name
 
@@ -102,7 +98,7 @@ resource "azurerm_virtual_network" "my_virtual_network" {
 
 
 # resource "azurerm_virtual_machine" "my_virtual_machine" {
-#   name                             = "${random_pet.this.id}-vm"
+#   name                             = "${local.prefix}-${random_pet.this.id}-vm"
 #   location                         = var.region
 #   resource_group_name              = azurerm_resource_group.my_resource_group.name
 #   network_interface_ids            = [azurerm_network_interface.my_network_interface.id]
@@ -127,7 +123,7 @@ resource "azurerm_virtual_network" "my_virtual_network" {
 #   os_profile {
 #     computer_name  = "my-vm"
 #     admin_username = var.admin_username
-#     admin_password = "OMeuCamiao15"
+#     admin_password = var.admin_password
 #   }
 
 
