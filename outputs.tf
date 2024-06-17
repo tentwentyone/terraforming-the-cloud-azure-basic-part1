@@ -15,7 +15,7 @@ output "subnet" {
   value = azurerm_subnet.my_subnet.name
 }
 
-# Exercicio 2.0
+# # Exercicio 2.0
 
 # output "vm" {
 #   value = {
@@ -23,6 +23,10 @@ output "subnet" {
 #     vm_location            = azurerm_linux_virtual_machine.my_virtual_machine.location
 #     vm_resource_group_name = azurerm_linux_virtual_machine.my_virtual_machine.resource_group_name
 #   }
+# }
+
+# output "vm_id" {
+#   value = azurerm_linux_virtual_machine.my_virtual_machine.id
 # }
 
 # output "my_network_interface" {
@@ -33,7 +37,15 @@ output "subnet" {
 #   }
 # }
 
-# Exercicio 3.2
+# output "azurerm_bastion_host" {
+#   value = data.azurerm_bastion_host.default.name
+# }
+
+# output "resource_group" {
+#   value = data.azurerm_resource_group.default.name
+# }
+
+# # Exercicio 3.2
 
 # output "my_virtual_network" {
 #   value = {

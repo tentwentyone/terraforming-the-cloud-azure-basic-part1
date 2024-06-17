@@ -33,6 +33,8 @@ data "azurerm_subscription" "this" {
   subscription_id = var.subscription_id
 }
 
+data "azurerm_client_config" "client" {
+}
 
 resource "random_pet" "this" {
   length    = 2
@@ -50,6 +52,24 @@ data "azurerm_virtual_network" "default" {
   resource_group_name = "tf-azure-workshop-rg"
 }
 
+data "azurerm_key_vault" "default" {
+  name                = "tf-azure-workshop-kv"
+  resource_group_name = "tf-azure-workshop-rg"
+}
+
+data "azurerm_key_vault_secret" "default" {
+  name         = "ssh-private-key"
+  key_vault_id = data.azurerm_key_vault.default.id
+}
+
+data "azurerm_bastion_host" "default" {
+  name                = "tf-azure-workshop-bastion"
+  resource_group_name = data.azurerm_resource_group.default.name
+}
+
+data "azurerm_resource_group" "default" {
+  name                = "tf-azure-workshop-rg"
+}
 
 resource "azurerm_subnet" "my_subnet" {
   name                 = "${random_pet.this.id}-subnet"
@@ -58,7 +78,7 @@ resource "azurerm_subnet" "my_subnet" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-##Exercicio 2.
+# #Exercicio 2.
 
 # resource "azurerm_linux_virtual_machine" "my_virtual_machine" {
 #   name                            = "${random_pet.this.id}-vm"
@@ -66,8 +86,6 @@ resource "azurerm_subnet" "my_subnet" {
 #   resource_group_name             = azurerm_resource_group.default.name
 #   size                            = "Standard_B1ls"
 #   admin_username                  = "adminuser"
-#   admin_password                  = "Password1234!"
-#   disable_password_authentication = false
 #   network_interface_ids           = [azurerm_network_interface.my_network_interface.id]
 #   os_disk {
 #     caching              = "ReadWrite"
@@ -75,16 +93,21 @@ resource "azurerm_subnet" "my_subnet" {
 #   }
 #   source_image_reference {
 #     publisher = "Canonical"
-#     offer     = "UbuntuServer"
-#     sku       = "16.04-LTS"
+#     offer     = "0001-com-ubuntu-server-jammy"
+#     sku       = "22_04-lts-gen2"
 #     version   = "latest"
 #   }
 
-## Descomentar para o Exercicio 2.1
-##   tags = {
-###     ## Example
-##     environment = "staging"
-##   }
+# # Descomentar para o Exercicio 2.1
+# #   tags = {
+# ##     ## Example
+# #     environment = "staging"
+# #   }
+
+#   admin_ssh_key {
+#     username   = "adminuser"
+#     public_key = data.azurerm_key_vault_secret.default.value
+#   }
 
 #   lifecycle {
 #     ignore_changes = [
@@ -94,6 +117,17 @@ resource "azurerm_subnet" "my_subnet" {
 
 #   depends_on = [azurerm_resource_group.default]
 
+# }
+
+# resource "azurerm_virtual_machine_extension" "aad_login" {
+#   name                      = "AADSSHLoginForLinux"
+#   virtual_machine_id        = azurerm_linux_virtual_machine.my_virtual_machine.id
+#   publisher                 = "Microsoft.Azure.ActiveDirectory"
+#   type                      = "AADSSHLoginForLinux"
+#   type_handler_version      = "1.0"
+#   automatic_upgrade_enabled = false
+
+#   depends_on = [azurerm_linux_virtual_machine.my_virtual_machine]
 # }
 
 # resource "azurerm_network_interface" "my_network_interface" {
@@ -108,4 +142,16 @@ resource "azurerm_subnet" "my_subnet" {
 #   }
 
 #   depends_on = [azurerm_resource_group.default]
+# }
+
+# resource "azurerm_role_assignment" "user_login" {
+#   scope                = azurerm_resource_group.default.id
+#   role_definition_name = "Virtual Machine User Login"
+#   principal_id         = data.azurerm_client_config.client.object_id
+# }
+
+# resource "azurerm_role_assignment" "key_vault_secrets_officer" {
+#   scope                = azurerm_resource_group.default.id
+#   role_definition_name = "Key Vault Secrets Officer"
+#   principal_id         = data.azurerm_client_config.client.object_id
 # }

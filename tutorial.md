@@ -78,7 +78,7 @@ az account set --subscription $AZURE_SUBSCRIPTION_ID
 
 ### Comando `init`
 
-> *[from docs:](https://www.terraform.io/docs/cli/commands/init.html) The `terraform init` command is used to initialize a working directory containing Terraform configuration files. This is the first command that should be run after writing a new Terraform configuration or cloning an existing one from version control. It is safe to run this command multiple times.*
+> _[from docs:](https://www.terraform.io/docs/cli/commands/init.html) The `terraform init` command is used to initialize a working directory containing Terraform configuration files. This is the first command that should be run after writing a new Terraform configuration or cloning an existing one from version control. It is safe to run this command multiple times._
 
 ```bash
 terraform init
@@ -86,11 +86,11 @@ terraform init
 
 ### Comando `plan`
 
-> *[from docs:](https://www.terraform.io/docs/cli/commands/plan.html) The `terraform plan` command creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure. By default, when Terraform creates a plan it:*
+> _[from docs:](https://www.terraform.io/docs/cli/commands/plan.html) The `terraform plan` command creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure. By default, when Terraform creates a plan it:_
 >
-> - *Reading the current state of any already-existing remote objects to make sure that the Terraform state is up-to-date.*
-> - *Comparing the current configuration to the prior state and noting any differences.*
-> - *Proposing a set of change actions that should, if applied, make the remote objects match the configuration.*
+> - _Reading the current state of any already-existing remote objects to make sure that the Terraform state is up-to-date._
+> - _Comparing the current configuration to the prior state and noting any differences._
+> - _Proposing a set of change actions that should, if applied, make the remote objects match the configuration._
 
 ```bash
 terraform plan
@@ -98,7 +98,7 @@ terraform plan
 
 ### Comando `apply`
 
-> *[from docs:](https://www.terraform.io/docs/cli/commands/apply.html) The `terraform apply` command executes the actions proposed in a Terraform plan.*
+> _[from docs:](https://www.terraform.io/docs/cli/commands/apply.html) The `terraform apply` command executes the actions proposed in a Terraform plan._
 
 ```bash
 terraform apply
@@ -122,9 +122,9 @@ az group show --name=$(terraform output -raw my_identifier)-rg
 
 ### Comando `destroy`
 
-> *[from docs:](https://www.terraform.io/docs/cli/commands/destroy.html) The `terraform destroy` command is a convenient way to destroy all remote objects managed by a particular Terraform configuration.*
+> _[from docs:](https://www.terraform.io/docs/cli/commands/destroy.html) The `terraform destroy` command is a convenient way to destroy all remote objects managed by a particular Terraform configuration._
 >
-> *While you will typically not want to destroy long-lived objects in a production environment, Terraform is sometimes used to manage ephemeral infrastructure for development purposes, in which case you can use `terraform destroy` to conveniently clean up all of those temporary objects once you are finished with your work.*
+> _While you will typically not want to destroy long-lived objects in a production environment, Terraform is sometimes used to manage ephemeral infrastructure for development purposes, in which case you can use `terraform destroy` to conveniently clean up all of those temporary objects once you are finished with your work._
 
 ```bash
 terraform destroy
@@ -158,14 +158,6 @@ az group show --name=$(terraform output -raw my_identifier)-rg
 - Não te esqueças de salvar o ficheiro depois de fazeres alterações! `ctrl+s` ou se estiveres num mac `cmd+s`.
 - ⌛Tempo do apply 1:30 min.
 
-Verifica que a virtual machine foi criada!
-
-```hcl
-
-az vm show -g=$(terraform output -raw my_identifier)-rg -n=$(terraform output -raw my_identifier)-vm -d
-
-```
-
 ### Assegurar a criação dos recursos (`plan` e `apply`)
 
 ```bash
@@ -174,6 +166,20 @@ terraform plan
 
 ```bash
 terraform apply
+```
+
+Verifica que a virtual machine foi criada!
+
+```hcl
+
+az vm show -g=$(terraform output -raw my_identifier)-rg -n=$(terraform output -raw my_identifier)-vm -d
+
+```
+
+Entra na virtual machine via SSH com o seguinte comando:
+
+```bash
+az network bastion ssh -n tf-azure-workshop-bastion --subscription=$(terraform output -raw subscription_id) --resource-group=$(terraform output -raw resource_group) --auth-type AAD --target-resource-id=$(terraform output -raw vm_id)
 ```
 
 </details>
@@ -255,9 +261,9 @@ terraform apply
 
 [Clica aqui caso não consigas prosseguir](#vault-deletion)
 
-*Notem que apenas alterámos uma mera variável...*
+_Notem que apenas alterámos uma mera variável..._
 
->**NOTA: NÃO DESTRUIR OS RECURSOS pois vamos usa-los no próximo passo**
+> **NOTA: NÃO DESTRUIR OS RECURSOS pois vamos usa-los no próximo passo**
 
 </details>
 
@@ -269,9 +275,9 @@ terraform apply
 
 <details><summary>Clica para veres o exercício 3</summary>
 
-> *[from docs:](https://developer.hashicorp.com/terraform/tutorials/state/state-import)Terraform supports bringing your existing infrastructure under its management. By importing resources into Terraform, you can consistently manage your infrastructure using a common workflow.*
+> _[from docs:](https://developer.hashicorp.com/terraform/tutorials/state/state-import)Terraform supports bringing your existing infrastructure under its management. By importing resources into Terraform, you can consistently manage your infrastructure using a common workflow._
 >
-> *This is a great way to slowly transition infrastructure to Terraform, or to be able to be confident that you can use Terraform in the future if it potentially doesn't support every feature you need today.*
+> _This is a great way to slowly transition infrastructure to Terraform, or to be able to be confident that you can use Terraform in the future if it potentially doesn't support every feature you need today._
 
 Assegurar que não existem alterações pendentes:
 
@@ -295,7 +301,7 @@ terraform apply
 
 <details><summary>Clica para veres o exercício 3.1</summary>
 
-O objetivo é simular recursos que já existiam para que os possamos *terraformar*.
+O objetivo é simular recursos que já existiam para que os possamos _terraformar_.
 
 Criar uma **Virtual Network**:
 
@@ -455,68 +461,68 @@ Prentende-se o seguinte:
 <details>
   <summary>Solution</summary>
 
-  ```hcl
+```hcl
 resource "azurerm_user_assigned_identity" "uai" {
-  resource_group_name = azurerm_resource_group.default.name
-  location            = azurerm_resource_group.default.location
-  name                = "${random_pet.this.id}-uai"
+resource_group_name = azurerm_resource_group.default.name
+location            = azurerm_resource_group.default.location
+name                = "${random_pet.this.id}-uai"
 }
 
 resource "azurerm_linux_virtual_machine" "final_exercise_machine" {
-  name                            = "${random_pet.this.id}-vm-new"
-  location                        = var.region
-  resource_group_name             = azurerm_resource_group.default.name
-  size                            = "Standard_B1ls"
-  admin_username                  = "adminuser"
-  admin_password                  = "Password1234!"
-  disable_password_authentication = false
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
-    version   = "latest"
-  }
-  identity {
-    type = "UserAssigned"
-    identity_ids = [
-      azurerm_user_assigned_identity.uai.id
-    ]
-  }
-  tags = {
-    ## Example
-    # environment = "staging"
-  }
-  lifecycle {
-    ignore_changes = [
-      identity
-    ]
-  }
-  network_interface_ids = [
-    azurerm_network_interface.final_exercise_nic.id
+name                            = "${random_pet.this.id}-vm-new"
+location                        = var.region
+resource_group_name             = azurerm_resource_group.default.name
+size                            = "Standard_B1ls"
+admin_username                  = "adminuser"
+admin_password                  = "Password1234!"
+disable_password_authentication = false
+os_disk {
+  caching              = "ReadWrite"
+  storage_account_type = "Standard_LRS"
+}
+source_image_reference {
+  publisher = "Canonical"
+  offer     = "UbuntuServer"
+  sku       = "16.04-LTS"
+  version   = "latest"
+}
+identity {
+  type = "UserAssigned"
+  identity_ids = [
+    azurerm_user_assigned_identity.uai.id
   ]
+}
+tags = {
+  ## Example
+  # environment = "staging"
+}
+lifecycle {
+  ignore_changes = [
+    identity
+  ]
+}
+network_interface_ids = [
+  azurerm_network_interface.final_exercise_nic.id
+]
 
 }
 
 resource "azurerm_network_interface" "final_exercise_nic" {
-  name                = "${random_pet.this.id}-nic"
-  location            = var.region
-  resource_group_name = azurerm_resource_group.default.name
+name                = "${random_pet.this.id}-nic"
+location            = var.region
+resource_group_name = azurerm_resource_group.default.name
 
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = data.azurerm_subnet.my_subnet.id
-    private_ip_address_allocation = "Dynamic"
-  }
+ip_configuration {
+  name                          = "internal"
+  subnet_id                     = data.azurerm_subnet.my_subnet.id
+  private_ip_address_allocation = "Dynamic"
+}
 }
 
 data "azurerm_subnet" "my_subnet" {
-  name                 = "${random_pet.this.id}-subnet"
-  virtual_network_name = "tf-azure-workshop-vnet"
-  resource_group_name  = "tf-azure-workshop-rg"
+name                 = "${random_pet.this.id}-subnet"
+virtual_network_name = "tf-azure-workshop-vnet"
+resource_group_name  = "tf-azure-workshop-rg"
 }
 ```
 
@@ -556,7 +562,7 @@ Na eventualidade de o `terraform destroy` estar a demorar mais tempo do que o ex
 ![alt text](/images/choose_vault.png)
 
 - À esquerda, seleciona a opção de `settings` e a seguir `properties`.
-Entre as opções procura pela opção `Soft Delete and security settings`, clica em update.
+  Entre as opções procura pela opção `Soft Delete and security settings`, clica em update.
 
 ![alt text](/images/soft_delete.png)
 
