@@ -58,7 +58,7 @@ resource "azurerm_subnet" "my_subnet" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-##Exercicio 2.
+###Exercicio 2.
 
 # resource "azurerm_linux_virtual_machine" "my_virtual_machine" {
 #   name                            = "${random_pet.this.id}-vm"
@@ -80,7 +80,7 @@ resource "azurerm_subnet" "my_subnet" {
 #     version   = "latest"
 #   }
 
-## Descomentar para o Exercicio 2.1
+### Descomentar para o Exercicio 2.1
 ##   tags = {
 ###     ## Example
 ##     environment = "staging"

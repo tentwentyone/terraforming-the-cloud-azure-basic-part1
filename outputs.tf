@@ -15,7 +15,7 @@ output "subnet" {
   value = azurerm_subnet.my_subnet.name
 }
 
-# Exercicio 2.0
+### Exercicio 2.0
 
 # output "vm" {
 #   value = {
@@ -33,7 +33,7 @@ output "subnet" {
 #   }
 # }
 
-# Exercicio 3.2
+### Exercicio 3.2
 
 # output "my_virtual_network" {
 #   value = {

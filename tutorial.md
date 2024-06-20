@@ -17,7 +17,6 @@
   - [4. Exercício](#4-exercício)
   - [Ajudas😵](#ajudas)
   - [5. Wrap up & Destroy](#5-wrap-up--destroy)
-  - [Vault Deletion](#vault-deletion)
 
 ### Temas abordados neste modulo
 
@@ -63,6 +62,8 @@ Na eventualidade da subscrição não ser <subscrição correcta> faz o seguinte
 ```bash
 az account set --subscription $AZURE_SUBSCRIPTION_ID
 ```
+
+Após obteres os resultados do `AZURE_SUBSCRIPTION_ID` e `AZURE_TENANT_ID` vai ao ficheiro `terraform.tfvars` e insere os valores nos campos homónimos `subscription_id` e `tenant_id`.
 
 💡 Ao fazerem copy-paste na `Azure Cloud Shell`, aconselhamos a que "colem" os conteúdos com `ctrl+shift+v`.
 
@@ -158,14 +159,6 @@ az group show --name=$(terraform output -raw my_identifier)-rg
 - Não te esqueças de salvar o ficheiro depois de fazeres alterações! `ctrl+s` ou se estiveres num mac `cmd+s`.
 - ⌛Tempo do apply 1:30 min.
 
-Verifica que a virtual machine foi criada!
-
-```hcl
-
-az vm show -g=$(terraform output -raw my_identifier)-rg -n=$(terraform output -raw my_identifier)-vm -d
-
-```
-
 ### Assegurar a criação dos recursos (`plan` e `apply`)
 
 ```bash
@@ -174,6 +167,12 @@ terraform plan
 
 ```bash
 terraform apply
+```
+
+Verifica que a virtual machine foi criada!
+
+```hcl
+az vm show -g=$(terraform output -raw my_identifier)-rg -n=$(terraform output -raw my_identifier)-vm -d
 ```
 
 </details>
@@ -258,8 +257,6 @@ Executar o `apply`:
 terraform apply
 ```
 
-[Clica aqui caso não consigas prosseguir](#vault-deletion)
-
 *Notem que apenas alterámos uma mera variável...*
 
 >**NOTA: NÃO DESTRUIR OS RECURSOS pois vamos usa-los no próximo passo**
@@ -342,7 +339,7 @@ Exemplo de um bloco `import`:
  }
 ```
 
-- Para o exercicio que segue, vamos ao ficheiro `import-exercise.tf` descomentar os blocos `import { ... }`
+- Para o exercicio que segue, vamos ao ficheiro `import-exercise.tf` descomentar o bloco `import { ... }` assim como o bloco de `resource`.
 - Vai também ao ficheiro `outputs.tf` e descomenta o bloco referente ao exercício `3.2`.
 - Não te esqueças de gravar as tuas alterações com `ctrl+s` ou se estiveres num mac `cmd+s`.
 
@@ -397,27 +394,87 @@ Vamos agora supôr que queremos mudar o nome dum recurso em terraform. Se formos
 
 Para evitar esse comportamento, uma vez que não queremos destruir o recurso, vamos usar o `move`.
 
-Vamos usar o ficheiro `move-exercise.tf` para:
-
-- Criar um novo random.pet
-- Novo plan
-- Novo apply
-- Descomentar o move e trocar o nome do random.pet.
+Vai ao ficheiro `move-exercise.tf` e descomenta o `resource` do `random.pet`
 
 ```bash
-moved {
-  from = <nome_do_recurso_a_mudar>
-  to = <novo_nome_do_recurso>
+resource "random_pet" "new_id" {
+  length    = 2
+  separator = "-"
+  prefix    = var.prefix
 }
 ```
 
-Vamos mudar o nome do recurso `random_pet.new_id` para `random_pet.moved`. Para isso, vamosdescomentar o bloco de move.
+Vamos correr um `plan`.
 
-Agora, o `terraform plan` em vez de destruir um recurso e criar um novo, deve apresentar uma indicação de move:
+```bash
+terraform plan
+```
+
+E um `apply` para criar o `random.pet`:
+
+```bash
+terraform apply
+```
+
+- ⌛Tempo do apply - 20 segundos.
+
+Agora, vamos mudar o nome do recurso para que o `resource "random_pet" "new_id"` seja `resource "random_pet" "moved"`.
+
+Se agora, fizermos um `terraform plan` o resultado será algo semelhante a isto:
+
+```bash
+  # random_pet.moved will be created
+  + resource "random_pet" "moved" {
+      + id        = (known after apply)
+      + length    = 2
+      + prefix    = ""
+      + separator = "-"
+    }
+
+  # random_pet.new_id will be destroyed
+  # (because random_pet.new_id is not in configuration)
+  - resource "random_pet" "new_id" {
+      - id        = "test-subtle-tiger" -> null
+      - length    = 2 -> null
+      - prefix    = "" -> null
+      - separator = "-" -> null
+    }
+
+Plan: 1 to add, 0 to change, 1 to destroy.
+```
+
+Como podem ver, ao alterar o nome do recurso o terraform pretende destruir o recurso anterior e criar um novo.
+
+⚠️ Não façam `terraform apply`.
+
+Para alterar o nome do recurso sem que o mesmo seja destruído, descomentamos o bloco de `move`. Isto fará com que o nome do recurso seja **alterado**, evitando que este seja destruído e recriado.
+
+```bash
+moved {
+  from = random_pet.new_id
+  to = random_pet.moved
+}
+```
+
+Vamos correr um `plan`.
+
+```bash
+terraform plan
+```
+
+Como podem ver, agora temos o seguinte resultado:
 
 ```bash
 random_pet.new_id has moved to random_pet.moved
 ```
+
+E fazemos `apply` para que o `random.pet` altere o seu nome:
+
+```bash
+terraform apply
+```
+
+- ⌛Tempo do apply - 20 segundos.
 
 Desta forma, conseguimos manter o mesmo objeto e mudar o seu nome, sem ter de o destruir!
 
@@ -455,7 +512,7 @@ Prentende-se o seguinte:
 - [`azurerm_network_interface`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface)
 - [`azurerm_subnet`](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet)
 
-💡 Uma subnet já existente poderá ser `data.azurerm_subnet.my_subnet.id`.
+💡 Uma subnet já existente poderá ser `azurerm_subnet.my_subnet.id`.
 
 </details>
 
@@ -542,88 +599,6 @@ terraform destroy
 ```
 
 🔚🏁 Chegámos ao fim 🏁🔚
-
-## Possíveis Problemas
-
-### Vault Deletion
-
-<details>
-  <summary>⚠️ Somente caso estejas a ter problemas a apagar recursos </summary>
-
-Na eventualidade de o `terraform destroy` estar a demorar mais tempo do que o expectável é necessário vermos se não foi criado um `vault` – isto pode impedir a destruição de recursos de acontecer conforme planeado.
-
-- Para garantirmos que tal não acontece temos de ir ao nosso `resource group`.
-
-![alt text](/images/check_rg.png)
-
-- Certifica-te que a subscrição em que estás a procurar é aquela em que criaste o teu `resource group`, quando o encontrares seleciona-o.
-
-![alt text](/images/choose_rg.png)
-
-- Na eventualidade deste recurso existir dentro do teu `resource-group` é necessário remove-lo para que possas prosseguir. Para tal, clica no recurso do `Vault`.
-
-![alt text](/images/choose_vault.png)
-
-- À esquerda, seleciona a opção de `settings` e a seguir `properties`.
-Entre as opções procura pela opção `Soft Delete and security settings`, clica em update.
-
-![alt text](/images/soft_delete.png)
-
-- Uma vez na janela dos settings do `soft delete` retira o ☑️ destas opções – isto vai-te permitir fazer delete do recurso.
-
-![alt text](/images/soft_settings.png)
-
-- O resultado final há de ser algo semelhante a este exemplo. Não te esqueças de clicar no botão de update para confirmares as tuas alterações.
-
-![alt text](/images/update_settings.png)
-
-- Antes de o apagarmos temos de verificar se este `vault` tem backups armazenados para algum dos recursos que criámos. Regressa à tab de `overview`.
-
-![alt text](/images/overview.png)
-
-- Entra na opção de `backup`.
-
-![alt text](/images/backup.png)
-
-- Faz scroll até encontrares a informação relativa ao uso do recurso. Como podes ver, o `vault` está a assegurar o `backup` de 1 recurso – para veres em maior detalhe clica nessa opção.
-
-![alt text](/images/backup_items.png)
-
-- Neste caso, o `backup` diz respeito à `virtual machine` que criámos anteriormente. Clica nesse `backup`.
-
-![alt text](/images/backup_items_count.png)
-
-- Como podes ver, temos um `backup` dessa `virtual machine`, temos de clicar nas opções do recurso.
-
-![alt text](/images/vault_options.png)
-
-Clica na opção – stop `backup`.
-
-![alt text](/images/vault_optionsx2.png)
-
-- Aqui, altera a opção de `Stop backup level` para `Delete backup data`. Em caso de dúvida quanto ao nome do recurso podes comprovar o nome do mesmo no canto superior esquerdo – como na imagem. Quando tiveres pronto, clica em `Stop backup`.
-
-![alt text](/images/stop_backup.png)
-
-- Podes utilizar o botão de `refresh` para verificar que os recursos foram destruídos.
-
-![alt text](/images/refresh.png)
-
-- Regressa ao teu `resource group` e destrói o `vault`, para que possas prosseguir. Clica no nome do teu `resource group`.
-
-![alt text](/images/back_to_rg.png)
-
-- Seleciona o recurso do `Vault` existente e nas opções escolhe `delete`.
-
-![alt text](/images/vault_delete.png)
-
-Escreve `delete` e confirma a remoção do recurso.
-
-![alt text](/images/delete_vault_resource.png)
-
-Podes agora voltar à Cloud Shell e fazer o comando `terraform destroy` para continuares com a destruição dos restantes recursos.
-
-</details>
 
 <!-- markdownlint-disable-file MD013 -->
 <!-- markdownlint-disable-file MD033 -->
