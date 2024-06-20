@@ -213,6 +213,11 @@ terraform apply
 <details><summary>Clica para veres o exercício 2.2</summary>
 
 - No ficheiro `main.tf`, localizar o recurso `azurerm_virtual_machine.my_virtual_machine` e alterar o campo `name` para o seguinte: `"${random_pet.this.id}-vm-new"`
+
+```bash
+"${random_pet.this.id}-vm-new"
+```
+
 - Guarda as tuas alterações! `ctrl+s` ou se estiveres num mac `cmd+s`.
 - Executar `terraform plan` e verificar que o Terraform irá efectuar um `replacement` - é uma alteração disruptiva.
 - ⌛Tempo do apply 2 min.
@@ -300,7 +305,7 @@ O objetivo é simular recursos que já existiam para que os possamos *terraforma
 Criar uma **Virtual Network**:
 
 ```bash
-az network vnet create --name=$(terraform output -raw my_identifier)-vnet --subscription=$(terraform output -raw subscription_id) --resource-group=$(terraform output -raw my_identifier)-rg
+az network vnet create --name=$(terraform output -raw my_identifier)-vnet --subscription="$(terraform output -raw subscription_id)" --resource-group=$(terraform output -raw my_identifier)-rg
 ```
 
 - ⌛Tempo para a criação do recurso 30 segundos.
@@ -392,6 +397,8 @@ Vamos agora supôr que queremos mudar o nome dum recurso em terraform. Se formos
 
 Para evitar esse comportamento, uma vez que não queremos destruir o recurso, vamos usar o `move`.
 
+Vamos usar o ficheiro `move-exercise.tf` para:
+
 - Criar um novo random.pet
 - Novo plan
 - Novo apply
@@ -404,11 +411,13 @@ moved {
 }
 ```
 
-Vamos mudar o nome do recurso `azurerm_virtual_network` para `my_imported_vnet_new` e descomentar o bloco de move.
+Vamos mudar o nome do recurso `random_pet.new_id` para `random_pet.moved`. Para isso, vamosdescomentar o bloco de move.
 
-Agora, o `terraform plan` em vez de destruir um recurso e criar um novo, deve apresentar o seguinte:
+Agora, o `terraform plan` em vez de destruir um recurso e criar um novo, deve apresentar uma indicação de move:
 
-![alt text](/images/plan_moved_example.png)
+```bash
+random_pet.new_id has moved to random_pet.moved
+```
 
 Desta forma, conseguimos manter o mesmo objeto e mudar o seu nome, sem ter de o destruir!
 
@@ -424,10 +433,10 @@ Desta forma, conseguimos manter o mesmo objeto e mudar o seu nome, sem ter de o 
 
 Prentende-se o seguinte:
 
-- 👉 Criar uma Azure Assigned Identity com os seguintes requisitos:
+- 👉 Criar uma User-Assigned Managed Identity com os seguintes requisitos:
   - `name` deverá ser prefixada com valor definido no recurso `random_pet.this.id` para evitar colisões de nomes
 - 👉 Criar uma Azure Virtual Machine com os seguintes requisitos:
-  - Nome da máquina deverá ser prefixado com valor definido no recurso `random_pet.this.id` para evitar colisões de nomes
+  - Nome da máquina deverá ser: `${random_pet.this.id}-vm-final`
   - Tipo de máquina: `Standard_B1s`
   - Zona: `westeurope`
   - Deverá conter uma tag (`project = terraform-part-1`)
@@ -463,7 +472,7 @@ resource "azurerm_user_assigned_identity" "uai" {
 }
 
 resource "azurerm_linux_virtual_machine" "final_exercise_machine" {
-  name                            = "${random_pet.this.id}-vm-new"
+  name                            = "${random_pet.this.id}-vm-final"
   location                        = var.region
   resource_group_name             = azurerm_resource_group.default.name
   size                            = "Standard_B1ls"
