@@ -45,24 +45,6 @@ source ./scripts/get-azure-credentials.sh
 
 Deve dar os valores do `AZURE_SUBSCRIPTION_ID` e `AZURE_TENANT_ID`.
 
-Caso o script não esteja a correr, usar este comando primeiro:
-
-```bash
-chmod 100 ./scripts/get-azure-credentials.sh
-```
-
-Após isto, podem verificar a subscrição em que se encontram usando este comando:
-
-```bash
-az account show --query name -o tsv
-```
-
-Na eventualidade da subscrição não ser <subscrição correcta> faz o seguinte comando:
-
-```bash
-az account set --subscription $AZURE_SUBSCRIPTION_ID
-```
-
 Após obteres os resultados do `AZURE_SUBSCRIPTION_ID` e `AZURE_TENANT_ID` vai ao ficheiro `terraform.tfvars` e insere os valores nos campos homónimos `subscription_id` e `tenant_id`.
 
 💡 Ao fazerem copy-paste na `Azure Cloud Shell`, aconselhamos a que "colem" os conteúdos com `ctrl+shift+v`.
@@ -590,7 +572,7 @@ data "azurerm_subnet" "my_subnet" {
 
 ---
 
-## 5. wrap-up & destroy
+## 5. Wrap-up & Destroy
 
 Destruir os conteúdos!
 
