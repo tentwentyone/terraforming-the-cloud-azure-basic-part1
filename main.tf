@@ -67,6 +67,8 @@ resource "azurerm_subnet" "default" {
 #   admin_password                  = "Password1234!"
 #   disable_password_authentication = false
 #   network_interface_ids           = [azurerm_network_interface.default.id]
+#   patch_assessment_mode           = "AutomaticByPlatform"
+#   provision_vm_agent              = true
 #   os_disk {
 #     caching              = "ReadWrite"
 #     storage_account_type = "Standard_LRS"
