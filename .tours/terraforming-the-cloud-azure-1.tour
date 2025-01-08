@@ -14,16 +14,16 @@
     },
     {
       "file": "README.md",
-      "description": "Para definir a subscrição corre o seguinte comando:\n\n- **az account set --subscription \"insert-value\"**\n\nSe quiseres ver todas as tuas subscrições utiliza:\n\n- **az account list --output table**",
+      "description": "Para definir a subscrição corre o seguinte comando:\n\n- **az account set --subscription < insert-value >**\n\nSe quiseres ver todas as tuas subscrições utiliza:\n\n- **az account list --output table**",
       "line": 13,
       "selection": {
         "start": {
-          "line": 7,
-          "character": 5
+          "line": 3,
+          "character": 35
         },
         "end": {
-          "line": 7,
-          "character": 35
+          "line": 3,
+          "character": 51
         }
       }
     },
@@ -33,19 +33,9 @@
       "line": 12
     },
     {
-      "file": "README.md",
+      "file": "scripts/get-azure-credentials.sh",
       "description": "Executa o seguinte script com o comando:\n\n- **source ./scripts/get-azure-credentials.sh**",
-      "line": 1,
-      "selection": {
-        "start": {
-          "line": 3,
-          "character": 5
-        },
-        "end": {
-          "line": 3,
-          "character": 46
-        }
-      }
+      "line": 1
     },
     {
       "file": "main.tf",
