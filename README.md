@@ -89,6 +89,45 @@ Setup está completo!
 
 </details>
 
+## Configurar o vscodeserver
+<!-- markdownlint-disable MD033 -->
+<details>
+
+<summary>Clicar para expandir</summary>
+<!-- markdownlint-enable MD033 -->
+
+Abre o terminal no vscode com o comando:
+
+```bash
+ctrl+ç
+```
+
+Faz git clone do repositório:
+
+```bash
+git clone https://github.com/tentwentyone/terraforming-the-cloud-azure-basic-part1.git
+```
+
+Abre a diretoria do projecto:
+
+```bash
+cd para o terraforming-the-cloud-azure-basic-part1
+```
+
+Inicia o codetour:
+
+```bash
+ctrl+k+ctrl+o
+```
+
+Seleciona o path para o codetour:
+
+```bash
+/home/coder/terraforming-the-cloud-azure-basic-part1
+```
+
+</details>
+
 ## Tutorial
 
 🧭 [Clica aqui para começar!](tutorial.md)
