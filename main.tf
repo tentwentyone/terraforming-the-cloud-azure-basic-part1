@@ -3,7 +3,7 @@
 
 
 terraform {
-  required_version = "1.9.5"
+  required_version = "1.10.4"
   backend "local" {
     path = "terraform.tfstate"
   }
