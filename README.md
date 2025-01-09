@@ -126,6 +126,10 @@ Seleciona o path para o codetour:
 /home/coder/terraforming-the-cloud-azure-basic-part1
 ```
 
+Inicia o tour no canto inferior esquerdo do teu Visual Studio Code:
+
+![alt text](/images/codetour.png)
+
 </details>
 
 ## Tutorial
