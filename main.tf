@@ -3,7 +3,7 @@
 
 
 terraform {
-  required_version = ">= 1.8.1"
+  required_version = "1.9.5"
   backend "local" {
     path = "terraform.tfstate"
   }
@@ -11,7 +11,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.106"
+      version = "4.14.0"
     }
   }
 }
