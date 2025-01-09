@@ -9,12 +9,17 @@
     },
     {
       "file": "README.md",
+      "description": "Certifica-te que estás no teu terminal fazendo o comando:\n- **ctrl+ç**\n\nAlternativamente, no canto superior esquerdo, podes também clicar em:\n\n- **View** e depois selecionar **Terminal**",
+      "line": 5
+    },
+    {
+      "file": "README.md",
       "description": "No terminal faz login em Azure utilizando o comando:\n- **az login --use-device-code**",
       "line": 11
     },
     {
       "file": "README.md",
-      "description": "Para definir a subscrição corre o seguinte comando:\n\n- **az account set --subscription < insert-value >**\n\nSe quiseres ver todas as tuas subscrições utiliza:\n\n- **az account list --output table**",
+      "description": "Para definir a subscrição:\n\n- Seleciona-a de entre as opções disponíveis no teu terminal recorrendo ao Nº da mesma.\n\nAlternativamente executa o comando:\n\n- **az account set --subscription < insert-value > (Subscription ID ou Subscription Name)**\n\nSe quiseres ver todas as tuas subscrições utiliza:\n\n- **az account list --output table**",
       "line": 13,
       "selection": {
         "start": {
@@ -403,12 +408,12 @@
       "line": 11
     },
     {
-      "file": "final-exercise.tf",
+      "file": "last-exercise.tf",
       "description": "4. **Exercício**\n\nNeste exercicio o objectivo é aplicar alguns dos conhecimentos adquiridos nesta sessão sem que exista uma solução pronta para descomentarem 😉.\n\n👉 Criar uma User-Assigned Managed Identity com os seguintes requisitos:\n- name deverá ser prefixada com valor definido no recurso random_pet.this.id para evitar colisões de nomes\n\n👉 Criar uma Azure Virtual Machine com os seguintes requisitos:\n- Nome da máquina deverá ser: ${random_pet.this.id}-vm-final\n- Tipo de máquina: Standard_B1ls\n- Zona: westeurope\n- Deverá conter uma tag.\n- A rede (subnetwork) onde a VM vai correr fica ao vosso critério: podem criar uma nova, ou podem usar as já existentes.\n- A máquina deverá correr com a azurerm_user_assigned_identity previamente criada.\n\n👉 Devem fazer o exercicio no ficheiro final-exercise.tf.",
       "line": 1
     },
     {
-      "file": "final-exercise.tf",
+      "file": "last-exercise.tf",
       "description": "Ajudas😵\n💡 Usem a pesquisa no terraform registry / azure para saberem mais informação acerca dos recursos que estão a usar:\n\n- [azurerm_user_assigned_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity)\n- [azurerm_virtual_machine](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine)\n- [azurerm_network_interface](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface)\n- [azurerm_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet)\n\n💡 Uma subnet já existente poderá ser **azurerm_subnet.default.id.**",
       "line": 2
     },
