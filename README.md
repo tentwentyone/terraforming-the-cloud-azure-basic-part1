@@ -111,7 +111,7 @@ git clone https://github.com/tentwentyone/terraforming-the-cloud-azure-basic-par
 Abre a diretoria do projecto:
 
 ```bash
-cd para o terraforming-the-cloud-azure-basic-part1
+cd terraforming-the-cloud-azure-basic-part1/
 ```
 
 Abre a diretoria com o comando:
