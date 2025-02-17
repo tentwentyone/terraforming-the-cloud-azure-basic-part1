@@ -14,12 +14,12 @@
     },
     {
       "file": "README.md",
-      "description": "No terminal faz login em Azure utilizando o comando:\n- **az login --use-device-code**",
+      "description": "No terminal faz login em Azure utilizando o comando:\n>> az login --use-device-code",
       "line": 11
     },
     {
       "file": "README.md",
-      "description": "Para definir a subscrição:\n\n- Seleciona-a de entre as opções disponíveis no teu terminal recorrendo ao Nº da mesma.\n\nAlternativamente executa o comando:\n\n- **az account set --subscription < insert-value > (Subscription ID ou Subscription Name)**\n\nSe quiseres ver todas as tuas subscrições utiliza:\n\n- **az account list --output table**",
+      "description": "Para definir a subscrição:\n\n- Seleciona-a de entre as opções disponíveis no teu terminal recorrendo ao Nº da mesma.\n\nAlternativamente executa o comando:\n\n- **az account set --subscription < insert-value >** (Subscription ID ou Subscription Name)\n\nSe quiseres ver todas as tuas subscrições utiliza:\n\n>> az account list --output table",
       "line": 13,
       "selection": {
         "start": {
@@ -34,17 +34,17 @@
     },
     {
       "file": "README.md",
-      "description": "Certifica-te que estás na subscrição correcta utilizando o comando:\n\n- **az account show**",
+      "description": "Certifica-te que estás na subscrição correcta utilizando o comando:\n\n>> az account show",
       "line": 12
     },
     {
       "file": "scripts/get-azure-credentials.sh",
-      "description": "Executa o seguinte script com o comando:\n\n- **source ./scripts/get-azure-credentials.sh**",
+      "description": "Executa o seguinte script com o comando:\n\n>> source ./scripts/get-azure-credentials.sh",
       "line": 1
     },
     {
       "file": "main.tf",
-      "description": "1. **O primeiro contacto**\n\nNesta secção iremos executar os 4 principais comandos de terraform: init, plan, apply e destroy.\n\n**[terraform init](https://developer.hashicorp.com/terraform/cli/commands/init)**\n- The terraform init command is used to initialize a working directory containing Terraform configuration files. This is the first command that should be run after writing a new Terraform configuration or cloning an existing one from version control. It is safe to run this command multiple times.\n",
+      "description": "1. **O primeiro contacto**\n\nNesta secção iremos executar os 4 principais comandos de terraform: init, plan, apply e destroy.\n\n**[terraform init](https://developer.hashicorp.com/terraform/cli/commands/init)**\n- O comando terraform init é utilizado para inicializar uma diretoria que contém ficheiros de configuração de Terraform. Este é o primeiro comando que deve ser executado após escrever uma nova configuração de Terraform ou clonar uma existente. É seguro executar este comando várias vezes.",
       "line": 1,
       "selection": {
         "start": {
@@ -59,22 +59,22 @@
     },
     {
       "file": "main.tf",
-      "description": "**[terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan)**\n\nThe terraform plan command creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure. By default, when Terraform creates a plan it:\n\n- Reading the current state of any already-existing remote objects to make sure that the Terraform state is up-to-date.\n- Comparing the current configuration to the prior state and noting any differences.\n- Proposing a set of change actions that should, if applied, make the remote objects match the configuration.",
+      "description": "**[terraform plan](https://developer.hashicorp.com/terraform/cli/commands/plan)**\n\nO comando terraform plan cria um plano de execução, permitindo visualizar antecipadamente as alterações que o Terraform pretende fazer à infraestrutura. Por predefinição, quando o Terraform cria um plan:\n\n- Lê o estado atual de quaisquer objetos remotos existentes para garantir que o estado do Terraform está atualizado.\n- Compara a configuração atual com o estado anterior e regista quaisquer diferenças.\n- Propõe um conjunto de ações que, se aplicadas, farão com que os objetos remotos correspondam à configuração.",
       "line": 1
     },
     {
       "file": "main.tf",
-      "description": "**[terraform apply](https://developer.hashicorp.com/terraform/cli/commands/apply)**\n\n- The terraform apply command executes the actions proposed in a Terraform plan.",
+      "description": "**[terraform apply](https://developer.hashicorp.com/terraform/cli/commands/apply)**\n\n- O comando terraform apply executa as ações propostas num plan de Terraform.",
       "line": 2
     },
     {
       "file": "main.tf",
-      "description": "**[terraform destroy](https://developer.hashicorp.com/terraform/cli/commands/destroy)**\n\n- The terraform destroy command is a convenient way to destroy all remote objects managed by a particular Terraform configuration.\n\nWhile you will typically not want to destroy long-lived objects in a production environment, Terraform is sometimes used to manage ephemeral infrastructure for development purposes, in which case you can use terraform destroy to conveniently clean up all of those temporary objects once you are finished with your work.",
+      "description": "**[terraform destroy](https://developer.hashicorp.com/terraform/cli/commands/destroy)**\n\n- O comando terraform destroy é uma forma prática de destruir todos os objetos geridos por uma determinada configuração de Terraform.\n\nEmbora normalmente não se queira destruir objetos num ambiente de produção, o Terraform é, por vezes, utilizado para gerir infraestrutura efémera para fins de desenvolvimento. Nesse caso, podemos utilizar o terraform destroy para apagar todos estes recursos.",
       "line": 3
     },
     {
       "file": "main.tf",
-      "description": "Para começar executa o comando:\n\n- **terraform init**",
+      "description": "Para começar executa o comando:\n\n>> terraform init",
       "line": 2,
       "selection": {
         "start": {
@@ -89,17 +89,17 @@
     },
     {
       "file": "main.tf",
-      "description": "Para veres as alterações a serem feitas à tua infraestrutura executa o comando:\n\n- **terraform plan**",
+      "description": "Para veres as alterações a serem feitas à tua infraestrutura executa o comando:\n\n>> terraform plan",
       "line": 3
     },
     {
       "file": "main.tf",
-      "description": "Para aplicares as alterações executa o comando:\n\n- **terraform apply**\n\n❗Não te esqueças de escrever **yes** para confirmar o apply.\n\n⏳ Tempo do apply - 1 min.",
+      "description": "Para aplicares as alterações executa o comando:\n\n>> terraform apply\n\n❗Não te esqueças de escrever **yes** para confirmar o apply.\n\n⏳ Tempo do apply - 1 min.",
       "line": 4
     },
     {
       "file": "main.tf",
-      "description": "Para verificares que os recursos remotos foram criados executa o comando:\n\n- **az group show --name=$(terraform output -raw my_identifier)-rg --output table**",
+      "description": "Para verificares que os recursos remotos foram criados executa o comando:\n\n>> az group show --name=$(terraform output -raw my_identifier)-rg --output table",
       "line": 5,
       "selection": {
         "start": {
@@ -114,17 +114,17 @@
     },
     {
       "file": "main.tf",
-      "description": "Examina todos os resource groups criados com o comando:\n\n- **az group list --output table**",
+      "description": "Examina todos os resource groups criados com o comando:\n\n>> az group list --output table",
       "line": 6
     },
     {
       "file": "main.tf",
-      "description": "Vamos destruir os recursos, para tal executa o comando:\n\n- **terraform destroy**\n\n⏳ Tempo do destroy - 1 min.",
+      "description": "Vamos destruir os recursos, para tal executa o comando:\n\n>> terraform destroy\n\n⏳ Tempo do destroy - 1 min.",
       "line": 7
     },
     {
       "file": "main.tf",
-      "description": "Confirma a destruição dos recursos:\n\n- **az group show --name=$(terraform output -raw my_identifier)-rg**\n\n\nDeverá apresentar um erro a dizer **No outputs found** porque estes foram destruídos.",
+      "description": "Confirma a destruição dos recursos:\n\n>> az group show --name=$(terraform output -raw my_identifier)-rg\n\n\nDeverá apresentar um erro a dizer **No outputs found** porque estes foram destruídos.",
       "line": 8,
       "selection": {
         "start": {
@@ -169,7 +169,7 @@
     },
     {
       "file": "main.tf",
-      "description": "Executa o plan:\n\n- **terraform plan**",
+      "description": "Executa o plan:\n\n>> terraform plan",
       "line": 60
     },
     {
@@ -179,12 +179,12 @@
     },
     {
       "file": "main.tf",
-      "description": "Executa o apply:\n\n- **terraform apply**\n\n❗Não te esqueças de escrever yes para confirmar o apply.\n\n⌛Tempo do apply 2:00 min.",
+      "description": "Executa o apply:\n\n>> terraform apply\n\n❗Não te esqueças de escrever yes para confirmar o apply.\n\n⌛Tempo do apply 2:00 min.",
       "line": 62
     },
     {
       "file": "main.tf",
-      "description": "Verifica que a tua virtual machine foi criada!\n\n- **az vm show -g=$(terraform output -raw my_identifier)-rg -n=$(terraform output -raw my_identifier)-vm -d --output table**\n\nSe quiseres ver todas as virtual machines criadas executa o comando:\n\n- **az vm list --output table**",
+      "description": "Verifica que a tua virtual machine foi criada!\n\n>> az vm show -g=$(terraform output -raw my_identifier)-rg -n=$(terraform output -raw my_identifier)-vm -d --output table\n\nSe quiseres ver todas as virtual machines criadas executa o comando:\n\n>> az vm list --output table",
       "line": 63
     },
     {
@@ -199,17 +199,17 @@
     },
     {
       "file": "main.tf",
-      "description": "Executa o plan:\n\n- **terraform plan**",
+      "description": "Executa o plan:\n\n>> terraform plan",
       "line": 81
     },
     {
       "file": "main.tf",
-      "description": "Executa o apply:\n\n- **terraform apply**\n\n⌛Tempo do apply 30 sec.",
+      "description": "Executa o apply:\n\n>> terraform apply\n\n⌛Tempo do apply 30 sec.",
       "line": 82
     },
     {
       "file": "main.tf",
-      "description": "Podes ver a tag que adicionaste à tua Virtual Machine com o comando:\n\n- **az vm show --name $(terraform output -raw my_identifier)-vm --resource-group $(terraform output -raw my_identifier)-rg --query \"tags\"**",
+      "description": "Podes ver a tag que adicionaste à tua Virtual Machine com o comando:\n\n>> az vm show --name $(terraform output -raw my_identifier)-vm --resource-group $(terraform output -raw my_identifier)-rg --query \"tags\"",
       "line": 83
     },
     {
@@ -234,22 +234,22 @@
     },
     {
       "file": "main.tf",
-      "description": "- Executa o **terraform plan** e verifica que o Terraform irá efectuar um *replacement* - é uma alteração disruptiva.",
+      "description": "- Executa o **terraform plan** e verifica que o Terraform irá efectuar um *replacement* - é uma alteração disruptiva.\n\n>> terraform plan",
       "line": 66
     },
     {
       "file": "main.tf",
-      "description": "Executa o apply:\n\n- **terraform apply**\n\n⌛Tempo do apply 2 min.\n",
+      "description": "Executa o apply:\n\n>> terraform apply\n\n⌛Tempo do apply 2 min.\n",
       "line": 54
     },
     {
       "file": "main.tf",
-      "description": "Verifica que a nova virtual machine foi criada!\n\n- **az vm show -g=$(terraform output -raw my_identifier)-rg -n=$(terraform output -raw my_identifier)-vm-new -d --output table**",
+      "description": "Verifica que a nova virtual machine foi criada!\n\n>> az vm show -g=$(terraform output -raw my_identifier)-rg -n=$(terraform output -raw my_identifier)-vm-new -d --output table",
       "line": 55
     },
     {
       "file": "main.tf",
-      "description": "Para veres todas as Virtual Machines executa o comando:\n\n- **az vm list --output table**",
+      "description": "Para veres todas as Virtual Machines executa o comando:\n\n>> az vm list --output table",
       "line": 56
     },
     {
@@ -259,12 +259,12 @@
     },
     {
       "file": "terraform.tfvars",
-      "description": "Executa o plan e verifica que todo o grafo de dependências é afetado:\n\n- **terraform plan**",
+      "description": "Executa o plan e verifica que todo o grafo de dependências é afetado:\n\n>> terraform plan",
       "line": 4
     },
     {
       "file": "terraform.tfvars",
-      "description": "Executa o apply\n\n- **terraform apply**\n\n⌛Tempo do apply 4:00 min.\n\n*Notem que apenas alterámos uma mera variável...*",
+      "description": "Executa o apply\n\n>> terraform apply\n\n⌛Tempo do apply 4:00 min.\n\n*Notem que apenas alterámos uma mera variável...*",
       "line": 5
     },
     {
@@ -274,12 +274,12 @@
     },
     {
       "file": "import-exercise.tf",
-      "description": "Assegura-te que não existem alterações pendententes:\n\n- **terraform plan**",
+      "description": "Assegura-te que não existem alterações pendententes:\n\n>> terraform plan",
       "line": 2
     },
     {
       "file": "import-exercise.tf",
-      "description": "Se o plan apresentar mudanças, façam o apply com o comando:\n\n- **terraform apply**",
+      "description": "Se o plan apresentar mudanças, façam o apply com o comando:\n\n>> terraform apply",
       "line": 3,
       "selection": {
         "start": {
@@ -299,17 +299,17 @@
     },
     {
       "file": "import-exercise.tf",
-      "description": "Cria uma Virtual Network com o comando:\n\n- **az network vnet create --name=$(terraform output -raw my_identifier)-import-vnet --subscription=\"$(terraform output -raw subscription_name)\" --resource-group=$(terraform output -raw my_identifier)-rg**\n\n\n⌛Tempo para a criação do recurso 30 segundos.",
+      "description": "Cria uma Virtual Network com o comando:\n\n>> az network vnet create --name=$(terraform output -raw my_identifier)-import-vnet --subscription=\"$(terraform output -raw subscription_name)\" --resource-group=$(terraform output -raw my_identifier)-rg\n\n\n⌛Tempo para a criação do recurso 30 segundos.",
       "line": 5
     },
     {
       "file": "import-exercise.tf",
-      "description": "Para verificar se a virtual network foi criada:\n\n- **az network vnet show --name=$(terraform output -raw my_identifier)-import-vnet --subscription=\"$(terraform output -raw subscription_name)\" --resource-group=$(terraform output -raw my_identifier)-rg --output table**",
+      "description": "Para verificar se a virtual network foi criada:\n\n>> az network vnet show --name=$(terraform output -raw my_identifier)-import-vnet --subscription=\"$(terraform output -raw subscription_name)\" --resource-group=$(terraform output -raw my_identifier)-rg --output table",
       "line": 6
     },
     {
       "file": "import-exercise.tf",
-      "description": "Para verificar todas as virtual networks existentes:\n\n- **az network vnet list --output table**",
+      "description": "Para verificar todas as virtual networks existentes:\n\n>> az network vnet list --output table",
       "line": 7
     },
     {
@@ -339,17 +339,17 @@
     },
     {
       "file": "import-exercise.tf",
-      "description": "Executa o plan:\n\n- **terraform plan**\n\nO resultado do plan deverá de apresentar:\n\n```Plan: 1 to import, 0 to add, 0 to change, 0 to destroy.```",
+      "description": "Executa o plan:\n\n>> terraform plan\n\nO resultado do plan deverá de apresentar:\n\n```Plan: 1 to import, 0 to add, 0 to change, 0 to destroy.```",
       "line": 11
     },
     {
       "file": "import-exercise.tf",
-      "description": "Executa o apply:\n\n- **terraform apply**\n\n⌛Tempo do apply - 10 segundos.",
+      "description": "Executa o apply:\n\n>> terraform apply\n\n⌛Tempo do apply - 10 segundos.",
       "line": 12
     },
     {
       "file": "import-exercise.tf",
-      "description": "Executa o plan:\n\n- **terraform plan**\n\nSe o terraform indicar que não tem alterações à infraestrutura, confirma-se que os recursos foram importados com sucesso.",
+      "description": "Executa o plan:\n\n>> terraform plan\n\nSe o terraform indicar que não tem alterações à infraestrutura, confirma-se que os recursos foram importados com sucesso.",
       "line": 13
     },
     {
@@ -364,12 +364,12 @@
     },
     {
       "file": "move-exercise.tf",
-      "description": "Executa o plan:\n\n- **terraform plan**",
+      "description": "Executa o plan:\n\n>> terraform plan",
       "line": 3
     },
     {
       "file": "move-exercise.tf",
-      "description": "Executa o apply:\n\n- **terraform apply**\n\n⌛Tempo do apply - 20 segundos.",
+      "description": "Executa o apply:\n\n>> terraform apply\n\n⌛Tempo do apply - 20 segundos.",
       "line": 4
     },
     {
@@ -379,7 +379,7 @@
     },
     {
       "file": "move-exercise.tf",
-      "description": "Executa um plan:\n\n- **terraform plan**",
+      "description": "Executa um plan:\n\n>> terraform plan",
       "line": 6
     },
     {
@@ -394,7 +394,7 @@
     },
     {
       "file": "move-exercise.tf",
-      "description": "Executa o plan:\n\n- **terraform plan**",
+      "description": "Executa o plan:\n\n>> terraform plan",
       "line": 9
     },
     {
@@ -404,7 +404,7 @@
     },
     {
       "file": "move-exercise.tf",
-      "description": "Executa o apply:\n\n- **terraform apply**\n\n⌛Tempo do apply - 20 segundos.\n\nDesta forma, conseguimos manter o mesmo objeto e mudar o seu nome, sem ter de o destruir!",
+      "description": "Executa o apply:\n\n>> terraform apply\n\n⌛Tempo do apply - 20 segundos.\n\nDesta forma, conseguimos manter o mesmo objeto e mudar o seu nome, sem ter de o destruir!",
       "line": 11
     },
     {
@@ -419,7 +419,7 @@
     },
     {
       "file": "main.tf",
-      "description": "5. **Wrap-up & Destroy**\n\nDestruir os conteúdos!\n\n- terraform destroy\n\n🔚🏁 Chegámos ao fim 🏁🔚",
+      "description": "5. **Wrap-up & Destroy**\n\nDestruir os conteúdos!\n\n>> terraform destroy\n\n🔚🏁 Chegámos ao fim 🏁🔚",
       "line": 113
     }
   ],

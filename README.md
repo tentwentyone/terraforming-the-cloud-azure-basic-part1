@@ -89,6 +89,31 @@ Setup está completo!
 
 </details>
 
+## Pré-Config Vscode
+<!-- markdownlint-disable MD033 -->
+<details>
+
+<summary>Clicar para expandir</summary>
+<!-- markdownlint-enable MD033 -->
+
+Para iniciares o workshop terás de aceder ao teu workspace no Coder.
+
+Será facultado um link assim como username e password para que possas fazer o login. Ao chegares a esta página utiliza as credenciais para entrares na plataforma.
+
+![alt text](/images/coder-login.png)
+
+Ao fazerem o login deverão encontrar um workspace já criado para o propósito do workshop semelhante a este:
+
+![alt text](/images/coder-workspaces.png)
+
+⚠️ Não criem um novo workspace.
+
+Ao acederem ao vosso workspace vão conseguir ver se este já se encontra disponível e se tal se verificar podem aceder ao `code-server`
+
+![alt text](/images/coder-server.png)
+
+</details>
+
 ## Configurar o vscodeserver
 <!-- markdownlint-disable MD033 -->
 <details>
@@ -100,6 +125,12 @@ Abre o terminal no vscode com o comando:
 
 ```bash
 ctrl+ç
+```
+
+ou se estiveres num mac:
+
+```bash
+shift+cmd+c
 ```
 
 Faz git clone do repositório:
@@ -118,6 +149,12 @@ Abre a diretoria com o comando:
 
 ```bash
 ctrl+k+ctrl+o
+```
+
+ou se estiveres num mac:
+
+```bash
+cmd+k+cmd+o
 ```
 
 Seleciona o path para o codetour:
