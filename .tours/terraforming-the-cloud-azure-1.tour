@@ -14,7 +14,7 @@
     },
     {
       "file": "README.md",
-      "description": "No terminal faz login em Azure utilizando o comando:\n>> az login --use-device-code",
+      "description": "No terminal faz login em Azure utilizando o comando:\n>> az login --use-device-code --tenant nosportugal.onmicrosoft.com",
       "line": 11
     },
     {
