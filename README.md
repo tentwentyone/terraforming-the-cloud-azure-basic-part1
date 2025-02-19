@@ -169,9 +169,9 @@ Inicia o tour no canto inferior esquerdo do teu Visual Studio Code:
 
 </details>
 
-## Tutorial
+<!--## Tutorial-->
 
-🧭 [Clica aqui para começar!](tutorial.md)
+<!--🧭 [Clica aqui para começar!](tutorial.md)-->
 
 ### Comandos Úteis
 
